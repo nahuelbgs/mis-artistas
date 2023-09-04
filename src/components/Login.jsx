@@ -6,11 +6,7 @@ function Login() {
   const [authorizationCode, setAuthorizationCode] = useState("");
   const clientId = "458d62972df24888b3e76df9a19261e4";
   const clientSecret = "363ed3c25cd54645ab7d0fd7d0abc312";
-  const [accessToken, setAccessToken] = useState(
-    localStorage.getItem("token") !== null
-      ? localStorage.getItem("token")
-      : null
-  );
+  const [accessToken, setAccessToken] = useState(null);
   useEffect(() => {
     const url = window.location.search;
     setAuthorizationCode(new URLSearchParams(url).get("code"));
@@ -22,7 +18,7 @@ function Login() {
           Authorization: authHeader,
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: `code=${authorizationCode}&redirect_uri=http://localhost:3000/&grant_type=authorization_code`,
+        body: `code=${authorizationCode}&redirect_uri=https://mis-artistas.vercel.app/&grant_type=authorization_code`,
       };
       fetch("https://accounts.spotify.com/api/token", authOptions)
         .then((response) => response.json())
@@ -42,6 +38,12 @@ function Login() {
     const newURL = `${window.location.origin}${window.location.pathname}`;
     return window.location.replace(newURL);
   };
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setAccessToken(storedToken);
+    }
+  }, []);
 
   return (
     <>
@@ -61,7 +63,7 @@ function Login() {
               <Button color="success">
                 <a
                   className="text-xl text-white max-sm:text-lg"
-                  href={`https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=http://localhost:3000/&scope=user-top-read&grant_type=authorization_code`}
+                  href={`https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=https://mis-artistas.vercel.app/&scope=user-top-read&grant_type=authorization_code`}
                 >
                   INICIAR SESIÓN CON SPOTIFY
                 </a>
