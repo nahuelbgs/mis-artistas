@@ -32,30 +32,37 @@ function Login() {
     }
   }, [authorizationCode]);
   return (
-    <div className="h-full">
+    <>
       {accessToken === null ? (
-        <div className="flex flex-col h-screen">
-          <div className="bg-gradient-to-tr from-pink-500 to-yellow-500 m-auto w-5/6 h-5/6 flex">
-            <div className="w-1/2">
-            <h1>¿Te gustaría conocer cuáles son los artistas y canciones que más has escuchado?</h1>
-            <Button className="bg-green-500">
-          <a
-            className="text-xl text-white"
-            href={`https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=http://localhost:3000/&scope=user-top-read&grant_type=authorization_code`}
-          >
-            INICIAR SESIÓN
-          </a>
-        </Button>
+        <div className="flex h-screen">
+          <div className="m-auto w-3/4 h-3/4 flex bg-[#111928af] backdrop-blur-lg backdrop-saturate-200 border border-[#ffffff20] rounded-lg">
+            <div className="w-2/5 flex flex-col items-start justify-center ml-10 text-white gap-5">
+              <h1 className="text-2xl">
+                ¿Te gustaría conocer cuáles son los artistas que más has escuchado?
+              </h1>
+              <h2 className="text-sm">Muestra tus principales artistas en Spotify durante el último mes, los últimos seis meses y a lo largo de tu historial de escucha.</h2>
+              <Button className="bg-green-500">
+                <a
+                  className="text-xl text-white"
+                  href={`https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=http://localhost:3000/&scope=user-top-read&grant_type=authorization_code`}
+                >
+                  INICIAR SESIÓN
+                </a>
+              </Button>
             </div>
-            <div className="w-1/2 flex items-end">
-            <img className="w-full object-cover" src='https://i.postimg.cc/6qw4fTr1/Artists.png' alt="Imagen con varios artistas"/>
+            <div className="w-3/5 flex">
+              <img
+                className="w-full object-cover"
+                src="https://i.postimg.cc/bwRLJFXn/artistas.png"
+                alt="Imagen con varios artistas"
+              />
             </div>
           </div>
         </div>
       ) : (
         <Selector />
       )}
-    </div>
+    </>
   );
 }
 

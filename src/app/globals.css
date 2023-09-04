@@ -3,5 +3,6 @@
 @tailwind utilities;
 
 :root {
-  background-color: #EAEAEA;
+  background-image: url('https://assets.shots.so/original/abstract/19.jpg');
+  background-size: cover;
 }

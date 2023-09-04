@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardFooter, Image, Button } from "@nextui-org/react";
 
-function ArtistCard({ image, name, url }) {
+function ArtistCard({ image, position, name, url }) {
   return (
     <Card className="col-span-12 sm:col-span-4 h-[280px] group">
       <Image
@@ -18,6 +18,7 @@ function ArtistCard({ image, name, url }) {
             src="https://cdn-icons-png.flaticon.com/256/2111/2111624.png"
           />
           <div className="flex flex-col">
+            <p>Top #{position}</p>
             <p className="text-tiny text-white/60">Escucha lo mejor de</p>
             <p className="text-tiny text-white/60">{`${name} en Spotify`}</p>
           </div>
