@@ -1,4 +1,4 @@
-import { Button, Card, CardFooter, CardHeader, Image } from "@nextui-org/react";
+import { Card, CardFooter, CardHeader, Image } from "@nextui-org/react";
 import React from "react";
 
 function Top1Card({ obj, top }) {

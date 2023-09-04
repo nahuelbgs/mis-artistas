@@ -31,7 +31,6 @@ function SongsTop({ accessToken, timeRange }) {
     }
   }, [mounted]);
 
-  console.log(songList);
   return (
     <>
       {loading ? (

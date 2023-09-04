@@ -27,7 +27,6 @@ function ArtistsTop({ accessToken, timeRange }) {
     }
   }, [mounted]);
 
-  console.log(data);
   return (
     <>
       {loading ? (
