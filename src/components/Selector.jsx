@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { Tabs, Tab } from "@nextui-org/react";
 import ArtistsTop from "./ArtistTop";
-import { useAppContext } from "./Context/AppContext";
 import SongsTop from "./SongsTop";
 
-export default function Selector() {
+export default function Selector({accessToken}) {
   const [option, setOption] = useState("tracks");
-  const { accessToken } = useAppContext();
 
   return (
     <div className="flex max-w-[900px] m-auto flex-col gap-2">

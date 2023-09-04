@@ -1,13 +1,16 @@
 import { React, useState, useEffect } from "react";
-import { useAppContext } from "./Context/AppContext";
 import Selector from "./Selector";
 import { Button } from "@nextui-org/react";
 
 function Login() {
   const [authorizationCode, setAuthorizationCode] = useState("");
-  const { accessToken, setAccessToken } = useAppContext();
   const clientId = "458d62972df24888b3e76df9a19261e4";
   const clientSecret = "363ed3c25cd54645ab7d0fd7d0abc312";
+  const [accessToken, setAccessToken] = useState(
+    localStorage.getItem("token") !== null
+      ? localStorage.getItem("token")
+      : null
+  );
   useEffect(() => {
     const url = window.location.search;
     setAuthorizationCode(new URLSearchParams(url).get("code"));
@@ -19,7 +22,7 @@ function Login() {
           Authorization: authHeader,
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: `code=${authorizationCode}&redirect_uri=https://mis-artistas.vercel.app/&grant_type=authorization_code`,
+        body: `code=${authorizationCode}&redirect_uri=http://localhost:3000/&grant_type=authorization_code`,
       };
       fetch("https://accounts.spotify.com/api/token", authOptions)
         .then((response) => response.json())
@@ -27,7 +30,7 @@ function Login() {
           setAccessToken(data.access_token);
           if (!localStorage.getItem("token")) {
             localStorage.setItem("token", data.access_token);
-            replaceUrl()
+            replaceUrl();
           }
         })
         .catch((error) => {
@@ -40,7 +43,6 @@ function Login() {
     return window.location.replace(newURL);
   };
 
-  console.log(accessToken);
   return (
     <>
       {accessToken === null ? (
@@ -59,7 +61,7 @@ function Login() {
               <Button color="success">
                 <a
                   className="text-xl text-white max-sm:text-lg"
-                  href={`https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=https://mis-artistas.vercel.app/&scope=user-top-read&grant_type=authorization_code`}
+                  href={`https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=http://localhost:3000/&scope=user-top-read&grant_type=authorization_code`}
                 >
                   INICIAR SESIÓN CON SPOTIFY
                 </a>
@@ -75,7 +77,7 @@ function Login() {
           </div>
         </div>
       ) : (
-        <Selector />
+        <Selector accessToken={accessToken} />
       )}
     </>
   );
