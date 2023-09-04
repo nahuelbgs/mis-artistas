@@ -24,26 +24,12 @@ function Login() {
         .then((response) => response.json())
         .then((data) => {
           setAccessToken(data.access_token);
-          if (!localStorage.getItem("token")) {
-            localStorage.setItem("token", data.access_token);
-            replaceUrl();
-          }
         })
         .catch((error) => {
           console.error("Error fetching access token:", error);
         });
     }
   }, [authorizationCode]);
-  const replaceUrl = () => {
-    const newURL = `${window.location.origin}${window.location.pathname}`;
-    return window.location.replace(newURL);
-  };
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setAccessToken(storedToken);
-    }
-  }, []);
 
   return (
     <>
