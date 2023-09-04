@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ArtistCard from "./ArtistCard";
-import SkeletonCard from "./SkeletonCard";
+import SkeletonCard from "./SkeletonCards/SkeletonCard";
 
 function ArtistsTop({ accessToken, timeRange }) {
   const [data, setData] = useState([]);

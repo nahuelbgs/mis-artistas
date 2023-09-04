@@ -7,7 +7,7 @@ function Top2Card({ obj, top }) {
       isFooterBlurred
       className="w-full h-[300px] col-span-12 sm:col-span-5"
     >
-      <CardHeader className="absolute z-10 top-1 flex-col !items-start backdrop-blur-xl">
+      <CardHeader className="absolute z-10 flex-col backdrop-blur-sm backdrop-saturate-150 bg-[#11192840]">
         <div className="flex w-full justify-between">
           <p className="text-tiny text-white/60 uppercase font-bold w-1/5">
             Top #{top}
@@ -35,13 +35,6 @@ function Top2Card({ obj, top }) {
                 </span>
               ))}
             </p>
-          </div>
-          <div className="w-3/12 flex justify-end">
-            <a href={obj.uri}>
-              <Button isIconOnly color="success">
-                P
-              </Button>
-            </a>
           </div>
         </div>
       </CardFooter>

@@ -1,8 +1,10 @@
-import { Button, Card, CardHeader, CardFooter, Image } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import SongCard from "./SongCards/SongCard";
 import Top1Card from "./SongCards/Top1Card";
 import Top2Card from "./SongCards/Top2Card";
+import Top1Skeleton from "./SkeletonCards/Top1Skeleton";
+import Top2Skeleton from "./SkeletonCards/Top2Skeleton";
+import SkeletonCard from "./SkeletonCards/SkeletonCard";
 
 function SongsTop({ accessToken, timeRange }) {
   const [songList, setSongList] = useState([]);
@@ -33,8 +35,14 @@ function SongsTop({ accessToken, timeRange }) {
   return (
     <>
       {loading ? (
-        <p>Cargando</p>
-      ) : (
+        <div className="max-w-[900px] gap-2 grid grid-cols-12 grid-rows-2 px-8">
+          <Top1Skeleton/>
+          <Top2Skeleton/>
+          <SkeletonCard/>
+          <SkeletonCard/>
+          <SkeletonCard/>
+          </div>
+        ) : (
         <div className="max-w-[900px] gap-2 grid grid-cols-12 grid-rows-2 px-8">
           <Top1Card obj={songList[0]} top={1} />
           <Top2Card obj={songList[1]} top={2} />
