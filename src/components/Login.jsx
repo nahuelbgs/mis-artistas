@@ -25,12 +25,22 @@ function Login() {
         .then((response) => response.json())
         .then((data) => {
           setAccessToken(data.access_token);
+          if (!localStorage.getItem("token")) {
+            localStorage.setItem("token", data.access_token);
+            replaceUrl()
+          }
         })
         .catch((error) => {
           console.error("Error fetching access token:", error);
         });
     }
   }, [authorizationCode]);
+  const replaceUrl = () => {
+    const newURL = `${window.location.origin}${window.location.pathname}`;
+    return window.location.replace(newURL);
+  };
+
+  console.log(accessToken);
   return (
     <>
       {accessToken === null ? (
@@ -38,9 +48,14 @@ function Login() {
           <div className="m-auto w-3/4 h-3/4 flex justify-between bg-[#111928af] backdrop-blur-lg backdrop-saturate-200 border border-[#ffffff20] rounded-lg max-lg:flex-col max-lg:justify-around max-sm:w-11/12 max-sm:h-5/6">
             <div className="w-5/12 flex flex-col items-start justify-center ml-10 text-white gap-5 max-lg:w-full max-lg:h-1/2 max-lg:m-0 max-lg:p-4 max-sm:gap-3">
               <h1 className="text-2xl max-sm:text-xl">
-                ¿Te gustaría conocer cuáles son los artistas que más has escuchado?
+                ¿Te gustaría conocer cuáles son los artistas que más has
+                escuchado?
               </h1>
-              <h2 className="text-sm max-sm:text-base">Muestra tus principales artistas y canciones en Spotify durante el último mes, los últimos seis meses y a lo largo de tu historial de escucha.</h2>
+              <h2 className="text-sm max-sm:text-base">
+                Muestra tus principales artistas y canciones en Spotify durante
+                el último mes, los últimos seis meses y a lo largo de tu
+                historial de escucha.
+              </h2>
               <Button color="success">
                 <a
                   className="text-xl text-white max-sm:text-lg"

@@ -7,7 +7,11 @@ export function useAppContext() {
 }
 
 export function MyContextProvider({ children }) {
-  const [accessToken, setAccessToken] = useState(null);
+  const [accessToken, setAccessToken] = useState(
+    localStorage.getItem("token") !== null
+      ? localStorage.getItem("token")
+      : null
+  );
   return (
     <AppContext.Provider value={{ accessToken, setAccessToken }}>
       {children}
