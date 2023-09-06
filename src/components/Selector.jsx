@@ -5,7 +5,6 @@ import SongsTop from "./SongsTop";
 
 export default function Selector({accessToken}) {
   const [option, setOption] = useState("tracks");
-
   return (
     <div className="flex max-w-[900px] m-auto flex-col gap-2">
       <Tabs 

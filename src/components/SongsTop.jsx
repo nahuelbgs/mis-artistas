@@ -9,7 +9,6 @@ import SkeletonCard from "./SkeletonCards/SkeletonCard";
 function SongsTop({ accessToken, timeRange }) {
   const [songList, setSongList] = useState([]);
   const [loading, setLoading] = useState(true);
-
   let mounted = true;
   useEffect(() => {
     if (accessToken && mounted) {
@@ -26,6 +25,7 @@ function SongsTop({ accessToken, timeRange }) {
       )
         .then((response) => response.json())
         .then((data) => setSongList(data.items))
+        .catch((error) => console.log(error))
         .finally(() => setLoading(false));
       mounted = false;
     }
@@ -35,13 +35,17 @@ function SongsTop({ accessToken, timeRange }) {
     <>
       {loading ? (
         <div className="max-w-[900px] gap-2 grid grid-cols-12 grid-rows-2 px-8">
-          <Top1Skeleton/>
-          <Top2Skeleton/>
-          <SkeletonCard/>
-          <SkeletonCard/>
-          <SkeletonCard/>
-          </div>
-        ) : (
+          <Top1Skeleton />
+          <Top2Skeleton />
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
+        </div>
+      ) : songList.length === 0 ? (
+        <div className="max-w-[900px] px-8">
+          <p>No tienes suficientes canciones</p>
+        </div>
+      ) : (
         <div className="max-w-[900px] gap-2 grid grid-cols-12 grid-rows-2 px-8">
           <Top1Card obj={songList[0]} top={1} />
           <Top2Card obj={songList[1]} top={2} />

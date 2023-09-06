@@ -1,29 +1,42 @@
 import { React, useState, useEffect } from "react";
 import Selector from "./Selector";
 import { Button } from "@nextui-org/react";
+import axios from "axios";
+import Link from "next/link";
 
 function Login() {
   const [authorizationCode, setAuthorizationCode] = useState("");
-  const clientId = "458d62972df24888b3e76df9a19261e4";
-  const clientSecret = "363ed3c25cd54645ab7d0fd7d0abc312";
   const [accessToken, setAccessToken] = useState(null);
+  const CLIENT_ID = "458d62972df24888b3e76df9a19261e4";
+  const CLIENT_SECRET = "363ed3c25cd54645ab7d0fd7d0abc312";
+  const REDIRECT_URI = 'http://localhost:3000'
+  const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize'
+  const RESPONSE_TYPE = 'code'
+  const SCOPE = 'user-top-read'
+  // useEffect(() =>{
+  //   const hash = window.location.hash;
+  //   if(hash){
+  //   let token = hash.substring(1).split('&').find(element => element.startsWith('access_token')).split('=')[1]
+  //   setAccessToken(token)}
+  // }, [])
+
   useEffect(() => {
     const url = window.location.search;
     setAuthorizationCode(new URLSearchParams(url).get("code"));
     if (authorizationCode) {
-      const authHeader = `Basic ${btoa(`${clientId}:${clientSecret}`)}`;
+      const authHeader = `Basic ${btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)}`;
       const authOptions = {
         method: "POST",
         headers: {
           Authorization: authHeader,
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: `code=${authorizationCode}&redirect_uri=https://mis-artistas.vercel.app/&grant_type=authorization_code`,
+        body: `grant_type=authorization_code&code=${authorizationCode}&redirect_uri=${REDIRECT_URI}`,
       };
       fetch("https://accounts.spotify.com/api/token", authOptions)
         .then((response) => response.json())
         .then((data) => {
-          setAccessToken(data.access_token);
+          setAccessToken(data.access_token)
         })
         .catch((error) => {
           console.error("Error fetching access token:", error);
@@ -49,7 +62,7 @@ function Login() {
               <Button color="success">
                 <a
                   className="text-xl text-white max-sm:text-lg"
-                  href={`https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=https://mis-artistas.vercel.app/&scope=user-top-read&grant_type=authorization_code`}
+                  href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`}
                 >
                   INICIAR SESIÓN CON SPOTIFY
                 </a>
