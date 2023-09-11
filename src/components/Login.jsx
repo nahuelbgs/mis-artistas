@@ -1,17 +1,22 @@
-import { React } from "react";
+import { React, useEffect } from "react";
 import Selector from "./Selector";
 import { Button } from "@nextui-org/react";
 
 function Login() {
   const CLIENT_ID = "458d62972df24888b3e76df9a19261e4";
-  const REDIRECT_URI = 'https://mis-artistas.vercel.app/callback'
-  const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize'
-  const RESPONSE_TYPE = 'code'
-  const SCOPE = 'user-top-read'
+  const REDIRECT_URI = "https://mis-artistas.vercel.app/callback";
+  const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
+  const RESPONSE_TYPE = "code";
+  const SCOPE = "user-top-read";
+
+  let token = "";
+  useEffect(() => {
+    token = localStorage.getItem("accessToken");
+  }, []);
 
   return (
     <>
-      {localStorage.getItem('accessToken') === null ? (
+      {token === null ? (
         <div className="flex h-screen">
           <div className="m-auto w-3/4 h-3/4 flex justify-between bg-[#111928af] backdrop-blur-lg backdrop-saturate-200 border border-[#ffffff20] rounded-lg max-lg:flex-col max-lg:justify-around max-sm:w-11/12 max-sm:h-5/6">
             <div className="w-5/12 flex flex-col items-start justify-center ml-10 text-white gap-5 max-lg:w-full max-lg:h-1/2 max-lg:m-0 max-lg:p-4 max-sm:gap-3">
@@ -43,7 +48,7 @@ function Login() {
           </div>
         </div>
       ) : (
-        <Selector accessToken={localStorage.getItem('accessToken')} />
+        <Selector accessToken={token} />
       )}
     </>
   );

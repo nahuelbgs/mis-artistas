@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-function callback() {
+function Callback() {
   const [accessToken, setAccessToken] = useState(null)
   const CLIENT_ID = "458d62972df24888b3e76df9a19261e4";
   const CLIENT_SECRET = "363ed3c25cd54645ab7d0fd7d0abc312";
@@ -28,13 +28,15 @@ function callback() {
         });
     }
   }, []);
+  console.log(accessToken)
   useEffect(() =>{
     if(accessToken !== null){
       window.location.href = 'https://mis-artistas.vercel.app/'
     }
   }, [accessToken])
 
-  return <div>This is a page</div>;
+  return <>
+  </>;
 }
 
-export default callback;
+export default Callback;
