@@ -1,36 +1,40 @@
+import { Card, CardFooter, CardHeader, Image } from "@nextui-org/react";
 import React from "react";
-import { Card, CardFooter, Image, Button } from "@nextui-org/react";
 
-function ArtistCard({ image, position, name, url }) {
+function SongCard({ obj, top }) {
   return (
-    <Card className="col-span-12 sm:col-span-4 h-[280px] group">
-      <Image
-        removeWrapper
-        alt="Card background"
-        className="z-0 w-full h-full object-cover group-hover:scale-125 group-hover:brightness-75"
-        src={image}
-      />
-      <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100 opacity-0 group-hover:opacity-100">
-        <div className="flex flex-grow gap-2 items-center">
-          <Image
-            alt="Breathing app icon"
-            className="rounded-full w-8 h-8 "
-            src="https://cdn-icons-png.flaticon.com/256/2111/2111624.png"
-          />
-          <div className="flex flex-col">
-            <p>Top #{position}</p>
-            <p className="text-tiny text-white/60">Escucha lo mejor de</p>
-            <p className="text-tiny text-white/60">{`${name} en Spotify`}</p>
-          </div>
+    <Card
+      isFooterBlurred
+      className="w-full h-[300px] col-span-12 sm:col-span-3 bg-[#111928bf]"
+    >
+      <CardHeader className="z-10 flex-col h-1/6">
+        <div className="flex w-full justify-between h-full items-center">
+          <p className="text-tiny text-center text-white/60 uppercase font-bold w-full">
+            Top #{top}
+          </p>
         </div>
-        <a href={url} target="_blank">
-          <Button radius="full" size="sm" className="bg-[#1DB954]">
-            App
-          </Button>
+      </CardHeader>
+      <div className="h-4/6">
+        <a href={obj.external_urls.spotify} target="_blank">
+          <Image
+            removeWrapper
+            alt="Relaxing app background"
+            className="object-contain rounded-none h-full w-full"
+            src={obj.images[0].url}
+          />
+        </a>
+      </div>
+      <CardFooter className="border-t-1 border-default-600 dark:border-default-100 w-full h-1/6">
+        <a
+          href={obj.external_urls.spotify}
+          target="_blank"
+          className="text-tiny text-center text-white/60 uppercase font-bold whitespace-nowrap overflow-hidden text-ellipsis w-full"
+        >
+          {obj.name}
         </a>
       </CardFooter>
     </Card>
   );
 }
 
-export default ArtistCard;
+export default SongCard;

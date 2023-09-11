@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
 import SongCard from "./SongCards/SongCard";
-import Top1Card from "./SongCards/Top1Card";
-import Top2Card from "./SongCards/Top2Card";
-import Top1Skeleton from "./SkeletonCards/Top1Skeleton";
-import Top2Skeleton from "./SkeletonCards/Top2Skeleton";
 import SkeletonCard from "./SkeletonCards/SkeletonCard";
 
 function SongsTop({ accessToken, timeRange }) {
@@ -30,13 +26,16 @@ function SongsTop({ accessToken, timeRange }) {
       mounted = false;
     }
   }, [mounted]);
-
+console.log(songList)
   return (
     <>
       {loading ? (
         <div className="max-w-[900px] gap-2 grid grid-cols-12 grid-rows-2 px-8">
-          <Top1Skeleton />
-          <Top2Skeleton />
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
           <SkeletonCard />
           <SkeletonCard />
           <SkeletonCard />
@@ -47,11 +46,14 @@ function SongsTop({ accessToken, timeRange }) {
         </div>
       ) : (
         <div className="max-w-[900px] gap-2 grid grid-cols-12 grid-rows-2 px-8">
-          <Top1Card obj={songList[0]} top={1} />
-          <Top2Card obj={songList[1]} top={2} />
+          <SongCard obj={songList[0]} top={1} />
+          <SongCard obj={songList[1]} top={2} />
           <SongCard obj={songList[2]} top={3} />
           <SongCard obj={songList[3]} top={4} />
           <SongCard obj={songList[4]} top={5} />
+          <SongCard obj={songList[5]} top={6} />
+          <SongCard obj={songList[6]} top={7} />
+          <SongCard obj={songList[7]} top={8} />
         </div>
       )}
     </>

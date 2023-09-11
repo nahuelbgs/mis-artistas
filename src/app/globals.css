@@ -7,3 +7,20 @@
   background-size: cover;
 }
 
+.animate {
+  position: relative;
+  animation: leftright 3s infinite alternate ease-in-out;
+}
+
+@keyframes leftright {
+0%,
+20% {
+  transform: translateX(0%);
+  left: 0%;
+}
+80%,
+100% {
+  transform: translateX(-100%);
+  left: 100%;
+}
+}

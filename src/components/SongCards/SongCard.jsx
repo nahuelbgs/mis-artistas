@@ -1,33 +1,62 @@
 import { Card, CardFooter, CardHeader, Image } from "@nextui-org/react";
 import React from "react";
-
 function SongCard({ obj, top }) {
+  if (obj == undefined) {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    window.location.reload();
+  }
   return (
-    <Card isFooterBlurred className="col-span-12 sm:col-span-4 h-[300px]">
-      <CardHeader className="absolute z-10 flex-col backdrop-blur-sm backdrop-saturate-150 bg-[#11192840]">
-        <div className="flex w-full justify-between">
-          <p className="text-tiny text-white/60 uppercase font-bold w-1/5 text-black">
+    <Card
+      isFooterBlurred
+      className="w-full sm:h-[300px] col-span-6 sm:col-span-3 bg-[#111928bf]"
+    >
+      <CardHeader className="z-10 flex-col h-1/6">
+        <div className="flex w-full justify-between h-full items-center">
+          <p className="text-tiny text-white/60 uppercase font-bold w-2/5">
             Top #{top}
           </p>
-          <p className="text-tiny text-right text-white/60 uppercase font-bold whitespace-nowrap overflow-hidden text-ellipsis w-4/5">
+          <a
+            title={obj.album.name}
+            href={obj.album.external_urls.spotify}
+            target="_blank"
+            className="text-tiny text-right text-white/60 whitespace-nowrap uppercase font-bold overflow-hidden text-ellipsis w-3/5"
+          >
             {obj.album.name}
-          </p>
+          </a>
         </div>
       </CardHeader>
-      <Image
-        removeWrapper
-        alt="Card background"
-        className="z-0 w-full h-full object-cover"
-        src={obj.album.images[0].url}
-      />
-      <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
-        <div className="flex w-full justify-between">
-          <div className="flex-col w-9/12">
-            <p className="text-small text-white/60">{obj.name}</p>
-            <p className="text-tiny text-white/60 whitespace-nowrap overflow-hidden text-ellipsis">
+      <div className="h-4/6">
+        <a href={obj.album.external_urls.spotify} target="_blank">
+          <Image
+            removeWrapper
+            alt="Relaxing app background"
+            className="object-contain rounded-none h-full"
+            src={obj.album.images[0].url}
+          />
+        </a>
+      </div>
+      <CardFooter className="border-t-1 border-default-600 dark:border-default-100 w-full h-1/6 group">
+        <div className=" flex flex-col w-full">
+          <div className="h-3/6">
+            <a
+              className="text-sm text-white/60 w-fit whitespace-nowrap overflow-hidden text-ellipsis hover:whitespace-normal"
+              href={obj.external_urls.spotify}
+              target="_blank"
+            >
+              {obj.name}
+            </a>
+          </div>
+          <div className="h-3/6">
+            <p
+              title=""
+              className="w-full text-tiny text-white/60 whitespace-nowrap overflow-hidden text-ellipsis hover:whitespace-normal transition-transform"
+            >
               {obj.artists.map((artist, index) => (
                 <span key={artist.id}>
-                  {artist.name}
+                  <a href={artist.external_urls.spotify} target="_blank">
+                    {artist.name}
+                  </a>
                   {index !== obj.artists.length - 1 ? ", " : ""}
                 </span>
               ))}
