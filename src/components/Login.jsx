@@ -1,18 +1,18 @@
-import { React, useEffect } from "react";
+import { React, useEffect, useState } from "react";
 import Selector from "./Selector";
 import { Button } from "@nextui-org/react";
 
 function Login() {
+  const [token, setToken] = useState(null)
   const CLIENT_ID = "458d62972df24888b3e76df9a19261e4";
-  const REDIRECT_URI = "https://mis-artistas.vercel.app/callback";
+  const REDIRECT_URI = "https://mis-artistas.vercel.app/Callback";
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
   const RESPONSE_TYPE = "code";
   const SCOPE = "user-top-read";
 
-  let token = null;
   useEffect(() => {
-    token = localStorage.getItem("accessToken");
-  }, []);
+    setToken(localStorage.getItem("accessToken"))
+  }, [token]);
 
   return (
     <>

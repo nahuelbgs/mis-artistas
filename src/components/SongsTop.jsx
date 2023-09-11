@@ -26,7 +26,6 @@ function SongsTop({ accessToken, timeRange }) {
       mounted = false;
     }
   }, [mounted]);
-console.log(songList)
   return (
     <>
       {loading ? (
