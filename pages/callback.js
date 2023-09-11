@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 function callback() {
   const [accessToken, setAccessToken] = useState(null)
   const CLIENT_ID = "458d62972df24888b3e76df9a19261e4";
