@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-function Callback() {
+function callback() {
   const [accessToken, setAccessToken] = useState(null)
   const CLIENT_ID = "458d62972df24888b3e76df9a19261e4";
   const CLIENT_SECRET = "363ed3c25cd54645ab7d0fd7d0abc312";
@@ -39,4 +39,4 @@ function Callback() {
   </>;
 }
 
-export default Callback;
+export default callback;

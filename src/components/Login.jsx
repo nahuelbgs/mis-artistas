@@ -9,7 +9,7 @@ function Login() {
   const RESPONSE_TYPE = "code";
   const SCOPE = "user-top-read";
 
-  let token = "";
+  let token = null;
   useEffect(() => {
     token = localStorage.getItem("accessToken");
   }, []);
