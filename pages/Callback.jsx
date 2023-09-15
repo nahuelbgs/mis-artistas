@@ -36,9 +36,8 @@ function Callback() {
   }, [accessToken]);
 
   return (
-    <>
-      <p>Page</p>
-    </>
+    <div className="bg-[url('https://assets.shots.so/original/abstract/19.jpg')] bg-cover w-full h-screen">
+    </div>
   );
 }
 export default Callback;

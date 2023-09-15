@@ -13,7 +13,7 @@ export default function Selector({ accessToken }) {
   }
   return (
     <>
-      <div className="flex max-w-[900px] m-auto flex-col gap-2 justify-center">
+      <div className="flex max-w-[900px] m-auto flex-col gap-2 justify-center min-h-screen">
         <div className="flex px-8 mt-4 justify-between">
         <Tabs
           aria-label="Options"
@@ -23,7 +23,7 @@ export default function Selector({ accessToken }) {
           <Tab key="tracks" title="Canciones"></Tab>
           <Tab key="artists" title="Artistas"></Tab>
         </Tabs>
-        <a onClick={handleLogout} className="flex items-center text-sm cursor-pointer">Cerrar sesión</a>
+        <a onClick={handleLogout} className="flex items-center text-sm cursor-pointer max-sm:text-tiny">Cerrar sesión</a>
         </div>
         <Tabs aria-label="Options" className="px-8">
           <Tab key="lastMonth" title="Último mes">
