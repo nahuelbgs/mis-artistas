@@ -31,7 +31,7 @@ function SongCard({ obj, top }) {
           <Image
             removeWrapper
             alt="Relaxing app background"
-            className="object-contain rounded-none h-full"
+            className="object-cover rounded-none h-full"
             src={obj.album.images[0].url}
           />
         </a>
@@ -40,7 +40,7 @@ function SongCard({ obj, top }) {
         <div className=" flex flex-col w-full">
           <div className="h-3/6">
             <a
-              className="text-sm text-white/60 w-fit whitespace-nowrap overflow-hidden text-ellipsis hover:whitespace-normal"
+              className="text-sm text-white/60 w-fit whitespace-nowrap overflow-hidden text-ellipsis"
               href={obj.external_urls.spotify}
               target="_blank"
             >
@@ -49,8 +49,7 @@ function SongCard({ obj, top }) {
           </div>
           <div className="h-3/6">
             <p
-              title=""
-              className="w-full text-tiny text-white/60 whitespace-nowrap overflow-hidden text-ellipsis hover:whitespace-normal transition-transform"
+              className="w-full text-tiny text-white/60 whitespace-nowrap overflow-hidden text-ellipsis"
             >
               {obj.artists.map((artist, index) => (
                 <span key={artist.id}>

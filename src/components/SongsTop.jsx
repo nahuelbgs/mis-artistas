@@ -26,9 +26,13 @@ function SongsTop({ accessToken, timeRange }) {
       mounted = false;
     }
   }, [mounted]);
+  const handleRestart = () =>{
+    localStorage.removeItem('accessToken')
+    window.location.reload()
+  }
   return (
     <>
-      {loading ? (
+      {songList !== undefined && loading ? (
         <div className="max-w-[900px] gap-2 grid grid-cols-12 grid-rows-2 px-8">
           <SkeletonCard />
           <SkeletonCard />
@@ -39,11 +43,11 @@ function SongsTop({ accessToken, timeRange }) {
           <SkeletonCard />
           <SkeletonCard />
         </div>
-      ) : songList.length === 0 ? (
+      ) : songList !== undefined && songList.length === 0 ? (
         <div className="max-w-[900px] px-8">
           <p>No tienes suficientes canciones</p>
         </div>
-      ) : (
+      ) : songList !== undefined && songList.length > 0 ? (
         <div className="max-w-[900px] gap-2 grid grid-cols-12 grid-rows-2 px-8">
           <SongCard obj={songList[0]} top={1} />
           <SongCard obj={songList[1]} top={2} />
@@ -54,7 +58,8 @@ function SongsTop({ accessToken, timeRange }) {
           <SongCard obj={songList[6]} top={7} />
           <SongCard obj={songList[7]} top={8} />
         </div>
-      )}
+      ) : <button onClick={handleRestart}>Ha ocurrido un error, presiona aqui volver a iniciar sesion</button>
+      }
     </>
   );
 }

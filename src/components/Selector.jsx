@@ -23,7 +23,7 @@ export default function Selector({ accessToken }) {
           <Tab key="tracks" title="Canciones"></Tab>
           <Tab key="artists" title="Artistas"></Tab>
         </Tabs>
-        <a onClick={handleLogout} className="flex items-center text-sm cursor-pointer max-sm:text-tiny">Cerrar sesión</a>
+        <a onClick={handleLogout} className="flex items-center text-sm cursor-pointer max-sm:text-tiny text-red-500">Cerrar sesión</a>
         </div>
         <Tabs aria-label="Options" className="px-8">
           <Tab key="lastMonth" title="Último mes">
