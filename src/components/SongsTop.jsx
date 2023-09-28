@@ -58,7 +58,10 @@ function SongsTop({ accessToken, timeRange }) {
           <SongCard obj={songList[6]} top={7} />
           <SongCard obj={songList[7]} top={8} />
         </div>
-      ) : <button onClick={handleRestart}>Ha ocurrido un error, presiona aqui volver a iniciar sesion</button>
+      ) :
+      <div className="h-screen px-8">
+      <button onClick={handleRestart}>Ha ocurrido un error, presiona aquí volver a iniciar sesión</button>
+      </div> 
       }
     </>
   );
