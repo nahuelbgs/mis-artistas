@@ -48,17 +48,15 @@ function ArtistsTop({ accessToken, timeRange }) {
           <p>No tienes suficientes canciones</p>
         </div>
       ) : artistsList !== undefined && artistsList.length > 0 ? (
-        <div className="max-w-[900px] px-8 m-auto">
-          <div className="grid grid-cols-12 gap-2 grid-rows-2">
-            <ArtistCard obj={artistsList[0]} top={1} />
-            <ArtistCard obj={artistsList[1]} top={2} />
-            <ArtistCard obj={artistsList[2]} top={3} />
-            <ArtistCard obj={artistsList[3]} top={4} />
-            <ArtistCard obj={artistsList[4]} top={5} />
-            <ArtistCard obj={artistsList[5]} top={6} />
-            <ArtistCard obj={artistsList[6]} top={7} />
-            <ArtistCard obj={artistsList[7]} top={8} />
-          </div>
+        <div className="max-w-[900px] px-8 grid grid-cols-12 gap-2 grid-rows-2">
+          <ArtistCard obj={artistsList[0]} top={1} />
+          <ArtistCard obj={artistsList[1]} top={2} />
+          <ArtistCard obj={artistsList[2]} top={3} />
+          <ArtistCard obj={artistsList[3]} top={4} />
+          <ArtistCard obj={artistsList[4]} top={5} />
+          <ArtistCard obj={artistsList[5]} top={6} />
+          <ArtistCard obj={artistsList[6]} top={7} />
+          <ArtistCard obj={artistsList[7]} top={8} />
         </div>
       ) : (
         <div className="h-screen px-8">
