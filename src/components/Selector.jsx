@@ -29,10 +29,12 @@ export default function Selector({ accessToken }) {
               Cerrar sesión
             </a>
           </div>
+          <div className="mt-2">
           <SwitcherTime
             switcherTime={switcherTime}
             setSwitcherTime={setSwitcherTime}
           />
+          </div>
         </div>
         {switcherArtistSong === "songs" && switcherTime === "short_term" && (
           <SongsTop accessToken={accessToken} timeRange="short_term" />
