@@ -10,9 +10,9 @@ function Login() {
   const RESPONSE_TYPE = process.env.RESPONSE_TYPE;
   const SCOPE = process.env.SCOPE;
 
-  // useEffect(() => {
-  //   setToken(localStorage.getItem("accessToken"))
-  // }, [token]);
+  useEffect(() => {
+    setToken(localStorage.getItem("accessToken"))
+  }, [token]);
 
   return (
     <>
