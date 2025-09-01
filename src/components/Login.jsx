@@ -4,15 +4,15 @@ import { Button } from "@nextui-org/react";
 
 function Login() {
   const [token, setToken] = useState(null)
-  const CLIENT_ID = "458d62972df24888b3e76df9a19261e4";
-  const REDIRECT_URI = "https://mis-artistas.vercel.app/Callback";
-  const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
-  const RESPONSE_TYPE = "code";
-  const SCOPE = "user-top-read";
+  const CLIENT_ID = process.env.CLIENT_ID;
+  const REDIRECT_URI = process.env.REDIRECT_URI;
+  const AUTH_ENDPOINT = process.env.AUTH_ENDPOINT;
+  const RESPONSE_TYPE = process.env.RESPONSE_TYPE;
+  const SCOPE = process.env.SCOPE;
 
-  useEffect(() => {
-    setToken(localStorage.getItem("accessToken"))
-  }, [token]);
+  // useEffect(() => {
+  //   setToken(localStorage.getItem("accessToken"))
+  // }, [token]);
 
   return (
     <>
