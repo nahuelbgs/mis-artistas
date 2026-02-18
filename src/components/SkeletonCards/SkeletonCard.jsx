@@ -1,14 +1,12 @@
-import React from 'react'
-import { Card, Image, Skeleton } from "@nextui-org/react";
+import React from "react";
+import {Skeleton} from "@heroui/skeleton";
 
 function SkeletonCard() {
   return (
-    <Card className="w-full h-[300px] max-sm:h-[230px] col-span-6 sm:col-span-3">
-    <Skeleton className="h-full w-full">
-      <Image width={300} alt="loading image" />
+    <Skeleton className="w-full h-[300px] max-sm:h-[230px] col-span-6 sm:col-span-3 overflow-hidden">
+      <div className="h-full w-full rounded-large bg-default-200/40 dark:bg-default-100/10 animate-pulse" />
     </Skeleton>
-  </Card>
-  )
+  );
 }
 
-export default SkeletonCard
+export default SkeletonCard;

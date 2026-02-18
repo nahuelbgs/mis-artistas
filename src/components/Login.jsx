@@ -1,14 +1,14 @@
 import { React, useEffect, useState } from "react";
 import Selector from "./Selector";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 
 function Login() {
   const [token, setToken] = useState(null)
-  const CLIENT_ID = process.env.CLIENT_ID;
-  const REDIRECT_URI = process.env.REDIRECT_URI;
-  const AUTH_ENDPOINT = process.env.AUTH_ENDPOINT;
-  const RESPONSE_TYPE = process.env.RESPONSE_TYPE;
-  const SCOPE = process.env.SCOPE;
+  const CLIENT_ID = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
+  const REDIRECT_URI = process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI;
+  const AUTH_ENDPOINT = process.env.NEXT_PUBLIC_SPOTIFY_AUTH_ENDPOINT;
+  const RESPONSE_TYPE = process.env.NEXT_PUBLIC_SPOTIFY_RESPONSE_TYPE;
+  const SCOPE = process.env.NEXT_PUBLIC_SPOTIFY_SCOPE;
 
   useEffect(() => {
     setToken(localStorage.getItem("accessToken"))

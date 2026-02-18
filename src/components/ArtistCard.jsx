@@ -1,11 +1,11 @@
-import { Card, CardFooter, CardHeader, Image } from "@nextui-org/react";
+import { Card, CardFooter, CardHeader, Image } from "@heroui/react";
 import React from "react";
 
 function SongCard({ obj, top }) {
   return (
     <Card
       isFooterBlurred
-      className="w-full h-[300px] max-sm:h-[230px] col-span-6 sm:col-span-3 bg-[#111928bf]"
+      className="w-full h-[300px] max-sm:h-[230px] col-span-6 sm:col-span-3 bg-[#111928bf] overflow-hidden"
     >
       <CardHeader className="z-10 flex-col h-1/6">
         <div className="flex w-full justify-between h-full items-center">
@@ -19,7 +19,7 @@ function SongCard({ obj, top }) {
           <Image
             removeWrapper
             alt="Relaxing app background"
-            className="object-cover rounded-none h-full w-full"
+            className="object-cover h-full w-full"
             src={obj.images[0].url}
           />
         </a>

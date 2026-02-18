@@ -5,26 +5,42 @@ import SkeletonCard from "./SkeletonCards/SkeletonCard";
 function ArtistsTop({ accessToken, timeRange }) {
   const [artistsList, setArtistsList] = useState([]);
   const [loading, setLoading] = useState(true);
-  let mounted = true;
+
   useEffect(() => {
-    if (accessToken && mounted) {
-      const auth = {
+    if (!accessToken) return;
+
+    const controller = new AbortController();
+
+    setLoading(true);
+    setArtistsList([]);
+
+    fetch(
+      `https://api.spotify.com/v1/me/top/artists?time_range=${timeRange}&limit=8`,
+      {
         method: "GET",
+        signal: controller.signal,
         headers: {
           Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/x-www-form-urlencoded",
         },
-      };
-      fetch(
-        `https://api.spotify.com/v1/me/top/artists?time_range=${timeRange}&limit=8`,
-        auth
+      }
+    )
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`Spotify API error: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) =>
+        setArtistsList(Array.isArray(data?.items) ? data.items : [])
       )
-        .then((response) => response.json())
-        .then((data) => setArtistsList(data.items))
-        .finally(() => setLoading(false));
-      mounted = false;
-    }
-  }, [mounted]);
+      .catch((error) => {
+        if (error?.name === "AbortError") return;
+        console.error(error);
+      })
+      .finally(() => setLoading(false));
+
+    return () => controller.abort();
+  }, [accessToken, timeRange]);
 
   const handleRestart = () => {
     localStorage.removeItem("accessToken");

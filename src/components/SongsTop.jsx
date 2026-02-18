@@ -5,27 +5,40 @@ import SkeletonCard from "./SkeletonCards/SkeletonCard";
 function SongsTop({ accessToken, timeRange }) {
   const [songList, setSongList] = useState([]);
   const [loading, setLoading] = useState(true);
-  let mounted = true;
+
   useEffect(() => {
-    if (accessToken && mounted) {
-      const auth = {
+    if (!accessToken) return;
+
+    const controller = new AbortController();
+
+    setLoading(true);
+    setSongList([]);
+
+    fetch(
+      `https://api.spotify.com/v1/me/top/tracks?time_range=${timeRange}&limit=10`,
+      {
         method: "GET",
+        signal: controller.signal,
         headers: {
           Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/x-www-form-urlencoded",
         },
-      };
-      fetch(
-        `https://api.spotify.com/v1/me/top/tracks?time_range=${timeRange}&limit=10`,
-        auth
-      )
-        .then((response) => response.json())
-        .then((data) => setSongList(data.items))
-        .catch((error) => console.log(error))
-        .finally(() => setLoading(false));
-      mounted = false;
-    }
-  }, [mounted]);
+      }
+    )
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`Spotify API error: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => setSongList(Array.isArray(data?.items) ? data.items : []))
+      .catch((error) => {
+        if (error?.name === "AbortError") return;
+        console.error(error);
+      })
+      .finally(() => setLoading(false));
+
+    return () => controller.abort();
+  }, [accessToken, timeRange]);
   const handleRestart = () =>{
     localStorage.removeItem('accessToken')
     window.location.reload()
