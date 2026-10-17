@@ -4,10 +4,15 @@ const WIDTH = 1080;
 const HEIGHT = 1920;
 const PADDING = 72;
 const GAP = 28;
-const COVER_SIZE = Math.floor((WIDTH - PADDING * 2 - GAP * 2) / 3); // 293
+const COVER_SIZE = Math.floor((WIDTH - PADDING * 2 - GAP * 2) / 3);
+
+function proxyUrl(url) {
+  if (!url) return null;
+  return `/api/image?url=${encodeURIComponent(url)}`;
+}
 
 const ExportView = forwardRef(function ExportView(
-  { items, type, title, subtitle, coverMap },
+  { items, type, title, subtitle },
   ref
 ) {
   return (
@@ -20,7 +25,7 @@ const ExportView = forwardRef(function ExportView(
           "radial-gradient(circle at 20% 20%, #065f46 0%, transparent 55%), linear-gradient(135deg, #022c22 0%, #052e16 100%)",
         color: "white",
         fontFamily: "'Inter', system-ui, sans-serif",
-        padding: 72,
+        padding: PADDING,
         display: "flex",
         flexDirection: "column",
         boxSizing: "border-box",
@@ -44,8 +49,8 @@ const ExportView = forwardRef(function ExportView(
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: 28,
+          gridTemplateColumns: `repeat(3, ${COVER_SIZE}px)`,
+          gap: GAP,
           flex: 1,
         }}
       >
@@ -54,7 +59,7 @@ const ExportView = forwardRef(function ExportView(
             type === "songs"
               ? item.album?.images?.[0]?.url
               : item.images?.[0]?.url;
-          const cover = coverMap?.[i] ?? originalCover;
+          const cover = proxyUrl(originalCover);
           const name = item.name;
           const subName =
             type === "songs"
@@ -64,12 +69,7 @@ const ExportView = forwardRef(function ExportView(
           return (
             <div
               key={item.id ?? i}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 10,
-                minWidth: 0,
-              }}
+              style={{ display: "flex", flexDirection: "column", gap: 10 }}
             >
               <div
                 style={{
@@ -85,7 +85,6 @@ const ExportView = forwardRef(function ExportView(
                   <img
                     src={cover}
                     alt={name}
-                    crossOrigin="anonymous"
                     style={{
                       width: COVER_SIZE,
                       height: COVER_SIZE,
@@ -112,6 +111,7 @@ const ExportView = forwardRef(function ExportView(
               </div>
               <div
                 style={{
+                  width: COVER_SIZE,
                   fontSize: 24,
                   fontWeight: 600,
                   whiteSpace: "nowrap",
@@ -125,6 +125,7 @@ const ExportView = forwardRef(function ExportView(
               {subName && (
                 <div
                   style={{
+                    width: COVER_SIZE,
                     fontSize: 18,
                     color: "rgba(255,255,255,0.6)",
                     whiteSpace: "nowrap",

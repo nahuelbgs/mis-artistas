@@ -8,30 +8,6 @@ const TIME_LABELS = {
   long_term: "Todo el tiempo",
 };
 
-async function urlToDataUrl(url) {
-  if (!url) return null;
-  try {
-    const proxied = `/api/image?url=${encodeURIComponent(url)}`;
-    const response = await fetch(proxied);
-    if (!response.ok) return url;
-    const blob = await response.blob();
-    return await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-  } catch {
-    return url;
-  }
-}
-
-function waitTwoFrames() {
-  return new Promise((resolve) =>
-    requestAnimationFrame(() => requestAnimationFrame(resolve))
-  );
-}
-
 async function waitForImages(node) {
   const imgs = Array.from(node.querySelectorAll("img"));
   await Promise.all(
@@ -54,7 +30,6 @@ async function waitForImages(node) {
 export default function ExportButton({ items, type, timeRange }) {
   const viewRef = useRef(null);
   const [busy, setBusy] = useState(false);
-  const [coverMap, setCoverMap] = useState(null);
 
   if (!items || items.length === 0) return null;
 
@@ -65,16 +40,6 @@ export default function ExportButton({ items, type, timeRange }) {
     if (!viewRef.current || busy) return;
     setBusy(true);
     try {
-      const covers = items
-        .slice(0, 9)
-        .map((item) =>
-          type === "songs"
-            ? item.album?.images?.[0]?.url
-            : item.images?.[0]?.url
-        );
-      const map = await Promise.all(covers.map(urlToDataUrl));
-      setCoverMap(map);
-      await waitTwoFrames();
       await waitForImages(viewRef.current);
 
       const dataUrl = await htmlToImage.toJpeg(viewRef.current, {
@@ -111,7 +76,6 @@ export default function ExportButton({ items, type, timeRange }) {
       }
     } finally {
       setBusy(false);
-      setCoverMap(null);
     }
   };
 
@@ -141,7 +105,6 @@ export default function ExportButton({ items, type, timeRange }) {
           type={type}
           title={title}
           subtitle={subtitle}
-          coverMap={coverMap}
         />
       </div>
     </>
