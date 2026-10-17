@@ -11,7 +11,8 @@ const TIME_LABELS = {
 async function urlToDataUrl(url) {
   if (!url) return null;
   try {
-    const response = await fetch(url, { mode: "cors", cache: "no-cache" });
+    const proxied = `/api/image?url=${encodeURIComponent(url)}`;
+    const response = await fetch(proxied);
     if (!response.ok) return url;
     const blob = await response.blob();
     return await new Promise((resolve, reject) => {
@@ -28,6 +29,25 @@ async function urlToDataUrl(url) {
 function waitTwoFrames() {
   return new Promise((resolve) =>
     requestAnimationFrame(() => requestAnimationFrame(resolve))
+  );
+}
+
+async function waitForImages(node) {
+  const imgs = Array.from(node.querySelectorAll("img"));
+  await Promise.all(
+    imgs.map(async (img) => {
+      if (!(img.complete && img.naturalWidth > 0)) {
+        await new Promise((resolve) => {
+          img.addEventListener("load", resolve, { once: true });
+          img.addEventListener("error", resolve, { once: true });
+        });
+      }
+      try {
+        await img.decode();
+      } catch {
+        /* ignore decode errors */
+      }
+    })
   );
 }
 
@@ -55,6 +75,7 @@ export default function ExportButton({ items, type, timeRange }) {
       const map = await Promise.all(covers.map(urlToDataUrl));
       setCoverMap(map);
       await waitTwoFrames();
+      await waitForImages(viewRef.current);
 
       const dataUrl = await htmlToImage.toJpeg(viewRef.current, {
         pixelRatio: 1,
