@@ -4,7 +4,7 @@ const WIDTH = 1080;
 const HEIGHT = 1920;
 
 const ExportView = forwardRef(function ExportView(
-  { items, type, title, subtitle },
+  { items, type, title, subtitle, coverMap },
   ref
 ) {
   return (
@@ -47,10 +47,11 @@ const ExportView = forwardRef(function ExportView(
         }}
       >
         {items.slice(0, 9).map((item, i) => {
-          const cover =
+          const originalCover =
             type === "songs"
               ? item.album?.images?.[0]?.url
               : item.images?.[0]?.url;
+          const cover = coverMap?.[i] ?? originalCover;
           const name = item.name;
           const subName =
             type === "songs"
