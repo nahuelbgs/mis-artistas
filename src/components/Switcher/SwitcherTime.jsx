@@ -1,58 +1,38 @@
-import React from "react";
+import { motion } from "framer-motion";
 
-function SwitcherTime({ switcherTime, setSwitcherTime }) {
-  const handleSwitcher = (e) => {
-    setSwitcherTime(e.target.value);
-  };
+const OPTIONS = [
+  { value: "short_term", label: "Último mes", short: "1 mes" },
+  { value: "medium_term", label: "Últimos 6 meses", short: "6 meses" },
+  { value: "long_term", label: "Todo el tiempo", short: "Siempre" },
+];
+
+export default function SwitcherTime({ switcherTime, setSwitcherTime }) {
   return (
-    <div className="bg-[#27272a] w-fit flex rounded-xl">
-      <div
-        className={`${
-          switcherTime === "short_term"
-            ? "bg-[#3F3F46] m-1 rounded-xl transition-all duration-500"
-            : "m-1 rounded-xl text-[#606067] transition-all duration-500"
-        }`}
-      >
-        <button
-          onClick={handleSwitcher}
-          value="short_term"
-          className="text-sm p-2"
-        >
-          Último Mes
-        </button>
-      </div>
-      <div
-        className={`${
-          switcherTime === "medium_term"
-            ? "bg-[#3F3F46] m-1 rounded-xl transition-all duration-500"
-            : "m-1 rounded-xl text-[#606067] transition-all duration-500"
-        }`}
-      >
-        <button
-          onClick={handleSwitcher}
-          value="medium_term"
-          className="text-sm p-2"
-        >
-          Últimos 6 meses
-        </button>
-      </div>
-      <div
-        className={`${
-          switcherTime === "long_term"
-            ? "bg-[#3F3F46] m-1 rounded-xl transition-all duration-500"
-            : "m-1 rounded-xl text-[#606067] transition-all duration-500"
-        }`}
-      >
-        <button
-          onClick={handleSwitcher}
-          value="long_term"
-          className="text-sm p-2"
-        >
-          Todo el tiempo
-        </button>
-      </div>
+    <div className="bg-black/40 backdrop-blur border border-white/5 rounded-full p-1 flex gap-1 w-fit">
+      {OPTIONS.map(({ value, label, short }) => {
+        const active = switcherTime === value;
+        return (
+          <button
+            key={value}
+            onClick={() => setSwitcherTime(value)}
+            className={`relative px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm whitespace-nowrap cursor-pointer transition-colors duration-300 ${
+              active ? "text-black font-semibold" : "text-white/60 hover:text-white"
+            }`}
+          >
+            {active && (
+              <motion.div
+                layoutId="timePill"
+                className="absolute inset-0 bg-[#1DB954] rounded-full"
+                transition={{ type: "spring", stiffness: 500, damping: 35 }}
+              />
+            )}
+            <span className="relative z-10">
+              <span className="sm:hidden">{short}</span>
+              <span className="hidden sm:inline">{label}</span>
+            </span>
+          </button>
+        );
+      })}
     </div>
   );
 }
-
-export default SwitcherTime;

@@ -1,33 +1,35 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ArtistCard from "./ArtistCard";
 import SkeletonCard from "./SkeletonCards/SkeletonCard";
+import ExportButton from "./ExportButton";
 
-function ArtistsTop({ accessToken, timeRange }) {
+const LIMIT = 9;
+const MIN_SKELETON_MS = 400;
+
+export default function ArtistsTop({ accessToken, timeRange }) {
   const [artistsList, setArtistsList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     if (!accessToken) return;
 
     const controller = new AbortController();
-
+    const startTime = Date.now();
     setLoading(true);
+    setFailed(false);
     setArtistsList([]);
 
     fetch(
-      `https://api.spotify.com/v1/me/top/artists?time_range=${timeRange}&limit=8`,
+      `https://api.spotify.com/v1/me/top/artists?time_range=${timeRange}&limit=${LIMIT}`,
       {
         method: "GET",
         signal: controller.signal,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+        headers: { Authorization: `Bearer ${accessToken}` },
       }
     )
       .then(async (response) => {
-        if (!response.ok) {
-          throw new Error(`Spotify API error: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`Spotify API error: ${response.status}`);
         return response.json();
       })
       .then((data) =>
@@ -36,8 +38,13 @@ function ArtistsTop({ accessToken, timeRange }) {
       .catch((error) => {
         if (error?.name === "AbortError") return;
         console.error(error);
+        setFailed(true);
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        const remaining = MIN_SKELETON_MS - (Date.now() - startTime);
+        if (remaining > 0) setTimeout(() => setLoading(false), remaining);
+        else setLoading(false);
+      });
 
     return () => controller.abort();
   }, [accessToken, timeRange]);
@@ -46,43 +53,62 @@ function ArtistsTop({ accessToken, timeRange }) {
     localStorage.removeItem("accessToken");
     window.location.reload();
   };
+
+  if (loading) return <PodiumSkeleton />;
+
+  if (failed) {
+    return (
+      <div className="px-8">
+        <button onClick={handleRestart} className="text-white/80 underline">
+          Ha ocurrido un error, presioná aquí para volver a iniciar sesión
+        </button>
+      </div>
+    );
+  }
+
+  if (artistsList.length === 0) {
+    return (
+      <div className="px-8">
+        <p className="text-white/80">No tenés suficientes artistas</p>
+      </div>
+    );
+  }
+
+  const top = artistsList.slice(0, 3);
+  const rest = artistsList.slice(3);
+
   return (
-    <>
-      {loading ? (
-        <div className="max-w-[900px] gap-2 grid grid-cols-12 grid-rows-2 px-8">
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
-        </div>
-      ) : artistsList !== undefined && artistsList.length === 0 ? (
-        <div className="max-w-[900px] px-8">
-          <p>No tienes suficientes canciones</p>
-        </div>
-      ) : artistsList !== undefined && artistsList.length > 0 ? (
-        <div className="max-w-[900px] px-8 grid grid-cols-12 gap-2 grid-rows-2">
-          <ArtistCard obj={artistsList[0]} top={1} />
-          <ArtistCard obj={artistsList[1]} top={2} />
-          <ArtistCard obj={artistsList[2]} top={3} />
-          <ArtistCard obj={artistsList[3]} top={4} />
-          <ArtistCard obj={artistsList[4]} top={5} />
-          <ArtistCard obj={artistsList[5]} top={6} />
-          <ArtistCard obj={artistsList[6]} top={7} />
-          <ArtistCard obj={artistsList[7]} top={8} />
-        </div>
-      ) : (
-        <div className="h-screen px-8">
-          <button onClick={handleRestart}>
-            Ha ocurrido un error, presiona aquí volver a iniciar sesión{" "}
-          </button>
+    <div className="flex flex-col gap-4 px-4 sm:px-8">
+      <div className="grid grid-cols-3 gap-4">
+        {top.map((artist, i) => (
+          <ArtistCard key={artist.id ?? i} obj={artist} top={i + 1} />
+        ))}
+      </div>
+      {rest.length > 0 && (
+        <div className="grid grid-cols-3 gap-3 w-full sm:w-5/6 mx-auto">
+          {rest.map((artist, i) => (
+            <ArtistCard key={artist.id ?? i + 3} obj={artist} top={i + 4} />
+          ))}
         </div>
       )}
-    </>
+      <ExportButton items={artistsList} type="artists" timeRange={timeRange} />
+    </div>
   );
 }
 
-export default ArtistsTop;
+function PodiumSkeleton() {
+  return (
+    <div className="flex flex-col gap-4 px-4 sm:px-8">
+      <div className="grid grid-cols-3 gap-4">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <SkeletonCard key={i} />
+        ))}
+      </div>
+      <div className="grid grid-cols-3 gap-3 w-full sm:w-5/6 mx-auto">
+        {Array.from({ length: LIMIT - 3 }).map((_, i) => (
+          <SkeletonCard key={i} />
+        ))}
+      </div>
+    </div>
+  );
+}

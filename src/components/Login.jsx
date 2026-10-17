@@ -1,57 +1,49 @@
-import { React, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Selector from "./Selector";
-import { Button } from "@heroui/react";
+import SpotifyBadge from "./SpotifyBadge";
 
-function Login() {
-  const [token, setToken] = useState(null)
+export default function Login() {
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    setToken(localStorage.getItem("accessToken"));
+  }, []);
+
+  if (token !== null) return <Selector accessToken={token} />;
+
   const CLIENT_ID = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
   const REDIRECT_URI = process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI;
   const AUTH_ENDPOINT = process.env.NEXT_PUBLIC_SPOTIFY_AUTH_ENDPOINT;
   const RESPONSE_TYPE = process.env.NEXT_PUBLIC_SPOTIFY_RESPONSE_TYPE;
   const SCOPE = process.env.NEXT_PUBLIC_SPOTIFY_SCOPE;
 
-  useEffect(() => {
-    setToken(localStorage.getItem("accessToken"))
-  }, [token]);
+  const authUrl = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(
+    REDIRECT_URI
+  )}&response_type=${RESPONSE_TYPE}&scope=${encodeURIComponent(SCOPE)}`;
 
   return (
-    <>
-      {token === null ? (
-        <div className="flex h-screen">
-          <div className="m-auto w-3/4 h-3/4 flex justify-between bg-[#111928af] backdrop-blur-lg backdrop-saturate-200 border border-[#ffffff20] rounded-lg max-lg:flex-col max-lg:justify-around max-sm:w-11/12 max-sm:h-5/6">
-            <div className="w-5/12 flex flex-col items-start justify-center ml-10 text-white gap-5 max-lg:w-full max-lg:m-0 max-lg:p-4 max-md-h-1/2 max-sm:h-2/3 max-sm:gap-4">
-              <h1 className="text-2xl max-sm:text-lg">
-                ¿Te gustaría conocer cuáles son los artistas que más has
-                escuchado?
-              </h1>
-              <h2 className="text-base max-sm:text-base">
-                Muestra tus principales artistas y canciones en Spotify durante
-                el último mes, los últimos seis meses y a lo largo de tu
-                historial de escucha.
-              </h2>
-              <Button color="success">
-                <a
-                  className="text-xl text-white max-sm:text-base"
-                  href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`}
-                >
-                  INICIAR SESIÓN CON SPOTIFY
-                </a>
-              </Button>
-            </div>
-            <div className="w-1/2 mt-3 max-lg:w-full max-lg:h-1/2 max-md:h-1/3">
-              <img
-                className="w-full h-full object-cover max-lg:object-contain max-lg:p-4"
-                src="https://i.postimg.cc/HxrbP9tN/asdasd.png"
-                alt="Imagen con varios artistas"
-              />
-            </div>
-          </div>
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="bg-black/40 backdrop-blur-md border border-white/5 rounded-3xl p-8 sm:p-12 max-w-md w-full flex flex-col items-center gap-6 shadow-2xl">
+        <SpotifyBadge className="w-16 h-16" />
+        <div className="text-center flex flex-col gap-3">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white leading-tight">
+            ¿Cuáles son tus artistas más escuchados?
+          </h1>
+          <p className="text-sm sm:text-base text-white/60">
+            Descubrí tus canciones y artistas top en Spotify del último mes,
+            los últimos 6 meses y de siempre.
+          </p>
         </div>
-      ) : (
-        <Selector accessToken={token} />
-      )}
-    </>
+        <a
+          href={authUrl}
+          className="bg-[#1DB954] hover:bg-[#1ed760] text-black font-semibold rounded-full px-8 py-3 text-sm sm:text-base transition-colors cursor-pointer shadow-lg w-full text-center"
+        >
+          Iniciar sesión con Spotify
+        </a>
+        <p className="text-xs text-white/40 text-center">
+          Solo lectura. No publicamos nada en tu cuenta.
+        </p>
+      </div>
+    </div>
   );
 }
-
-export default Login;

@@ -1,24 +1,37 @@
-import React from "react";
+import { motion } from "framer-motion";
 
-function SwitcherArtistSong({switcherArtistSong, setSwitcherArtistSong}) {
-    const handleSwitcher = (e) =>{
-        e.preventDefault()
-        setSwitcherArtistSong(e.target.value);
-    }
+const OPTIONS = [
+  { value: "songs", label: "Canciones" },
+  { value: "artists", label: "Artistas" },
+];
+
+export default function SwitcherArtistSong({
+  switcherArtistSong,
+  setSwitcherArtistSong,
+}) {
   return (
-    <div className="bg-[#27272a] flex w-fit rounded-xl">
-      <div className={`${switcherArtistSong === 'songs' ? 'bg-[#3F3F46] m-1 rounded-xl  transition-all duration-500' : 'm-1 rounded-xl text-[#606067] transition-all duration-500'}`}>
-        <button onClick={handleSwitcher} value='songs' className="text-sm p-2">
-          Canciones
-        </button>
-      </div>
-      <div className={`${switcherArtistSong === 'artists' ? 'bg-[#3F3F46] m-1 rounded-xl  transition-all duration-500' : 'm-1 rounded-xl text-[#606067] transition-all duration-500'}`}>
-        <button onClick={handleSwitcher} value='artists' className="text-sm p-2">
-          Artistas
-        </button>
-      </div>
+    <div className="bg-black/40 backdrop-blur border border-white/5 rounded-full p-1 flex gap-1">
+      {OPTIONS.map(({ value, label }) => {
+        const active = switcherArtistSong === value;
+        return (
+          <button
+            key={value}
+            onClick={() => setSwitcherArtistSong(value)}
+            className={`relative px-4 py-1.5 rounded-full text-sm cursor-pointer transition-colors duration-300 ${
+              active ? "text-black font-semibold" : "text-white/60 hover:text-white"
+            }`}
+          >
+            {active && (
+              <motion.div
+                layoutId="artistSongPill"
+                className="absolute inset-0 bg-[#1DB954] rounded-full"
+                transition={{ type: "spring", stiffness: 500, damping: 35 }}
+              />
+            )}
+            <span className="relative z-10">{label}</span>
+          </button>
+        );
+      })}
     </div>
   );
 }
-
-export default SwitcherArtistSong;

@@ -1,12 +1,9 @@
-import React from "react";
-import {Skeleton} from "@heroui/skeleton";
-
-function SkeletonCard() {
+export default function SkeletonCard() {
   return (
-    <Skeleton className="w-full h-[300px] max-sm:h-[230px] col-span-6 sm:col-span-3 overflow-hidden">
-      <div className="h-full w-full rounded-large bg-default-200/40 dark:bg-default-100/10 animate-pulse" />
-    </Skeleton>
+    <div className="bg-black/40 border border-white/5 rounded-3xl p-4 flex flex-col gap-4">
+      <div className="aspect-square rounded-2xl bg-white/5 animate-pulse" />
+      <div className="h-4 w-2/3 rounded bg-white/5 animate-pulse" />
+      <div className="h-3 w-1/2 rounded bg-white/5 animate-pulse -mt-2" />
+    </div>
   );
 }
-
-export default SkeletonCard;

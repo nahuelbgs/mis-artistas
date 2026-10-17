@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ArtistsTop from "./ArtistTop";
 import SongsTop from "./SongsTop";
 import SwitcherTime from "./Switcher/SwitcherTime";
@@ -13,26 +13,32 @@ export default function Selector({ accessToken }) {
     window.open(logoutUrl, "_blank");
     window.location.reload();
   };
+  const title = switcherArtistSong === "songs" ? "Top Canciones" : "Top Artistas";
+
   return (
-    <>
-      <div className="flex max-w-[900px] m-auto flex-col gap-2 justify-center min-h-screen">
-        <div className="mt-2 px-8 flex flex-col gap-2">
-          <div className="flex justify-between">
+    <div className="flex max-w-5xl m-auto flex-col gap-6 min-h-screen py-6">
+        <div className="px-4 sm:px-8 flex flex-col gap-4">
+          <div className="flex justify-between items-center">
             <SwitcherArtistSong
               switcherArtistSong={switcherArtistSong}
               setSwitcherArtistSong={setSwitcherArtistSong}
             />
-            <a
-              onClick={handleLogout}
-              className="flex items-center text-sm cursor-pointer max-sm:text-tiny text-red-500"
-            >
-              Cerrar sesión
-            </a>
+            <div className="bg-black/40 backdrop-blur border border-white/5 rounded-full p-1">
+              <button
+                onClick={handleLogout}
+                className="px-4 py-1.5 rounded-full text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors cursor-pointer"
+              >
+                Cerrar sesión
+              </button>
+            </div>
           </div>
-            <SwitcherTime
-              switcherTime={switcherTime}
-              setSwitcherTime={setSwitcherTime}
-            />
+          <SwitcherTime
+            switcherTime={switcherTime}
+            setSwitcherTime={setSwitcherTime}
+          />
+          <h1 className="text-3xl sm:text-4xl font-bold text-white mt-2">
+            {title}
+          </h1>
         </div>
         {switcherArtistSong === "songs" && switcherTime === "short_term" && (
           <SongsTop accessToken={accessToken} timeRange="short_term" />
@@ -52,13 +58,6 @@ export default function Selector({ accessToken }) {
         {switcherArtistSong === "artists" && switcherTime === "long_term" && (
           <ArtistsTop accessToken={accessToken} timeRange="long_term" />
         )}
-      </div>
-      <footer className="bg-[#111928bf] border-t-1 border-default-600 dark:border-default-100 h-14 mt-1">
-        <img
-          className="object-contain w-full h-full py-2 grayscale"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Spotify_logo_with_text.svg/1200px-Spotify_logo_with_text.svg.png"
-        />
-      </footer>
-    </>
+    </div>
   );
 }
