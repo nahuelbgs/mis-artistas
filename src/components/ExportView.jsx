@@ -2,6 +2,9 @@ import { forwardRef } from "react";
 
 const WIDTH = 1080;
 const HEIGHT = 1920;
+const PADDING = 72;
+const GAP = 28;
+const COVER_SIZE = Math.floor((WIDTH - PADDING * 2 - GAP * 2) / 3); // 293
 
 const ExportView = forwardRef(function ExportView(
   { items, type, title, subtitle, coverMap },
@@ -71,8 +74,8 @@ const ExportView = forwardRef(function ExportView(
               <div
                 style={{
                   position: "relative",
-                  width: "100%",
-                  aspectRatio: "1 / 1",
+                  width: COVER_SIZE,
+                  height: COVER_SIZE,
                   borderRadius: 24,
                   overflow: "hidden",
                   background: "rgba(0,0,0,0.3)",
@@ -84,9 +87,8 @@ const ExportView = forwardRef(function ExportView(
                     alt={name}
                     crossOrigin="anonymous"
                     style={{
-                      width: "100%",
-                      height: "100%",
-                      maxWidth: "100%",
+                      width: COVER_SIZE,
+                      height: COVER_SIZE,
                       objectFit: "cover",
                       display: "block",
                     }}

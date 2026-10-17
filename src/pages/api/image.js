@@ -1,13 +1,8 @@
-const ALLOWED_HOSTS = new Set([
-  "i.scdn.co",
-  "mosaic.scdn.co",
-  "image-cdn-ak.spotifycdn.com",
-  "image-cdn-fa.spotifycdn.com",
-  "lineup-images.scdn.co",
-  "thisis-images.spotifycdn.com",
-  "daily-mix.scdn.co",
-  "newjams-images.scdn.co",
-]);
+function isAllowedHost(hostname) {
+  return (
+    hostname.endsWith(".scdn.co") || hostname.endsWith(".spotifycdn.com")
+  );
+}
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -27,7 +22,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Invalid URL" });
   }
 
-  if (!ALLOWED_HOSTS.has(parsed.hostname)) {
+  if (!isAllowedHost(parsed.hostname)) {
     return res.status(400).json({ error: "Host not allowed" });
   }
 
