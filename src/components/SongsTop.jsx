@@ -20,6 +20,8 @@ export default function SongsTop({ accessToken, timeRange }) {
     setFailed(false);
     setSongList([]);
 
+    let unauthorized = false;
+
     fetch(
       `https://api.spotify.com/v1/me/top/tracks?time_range=${timeRange}&limit=${LIMIT}`,
       {
@@ -29,16 +31,26 @@ export default function SongsTop({ accessToken, timeRange }) {
       }
     )
       .then(async (response) => {
+        if (response.status === 401) {
+          unauthorized = true;
+          localStorage.removeItem("accessToken");
+          window.location.reload();
+          return null;
+        }
         if (!response.ok) throw new Error(`Spotify API error: ${response.status}`);
         return response.json();
       })
-      .then((data) => setSongList(Array.isArray(data?.items) ? data.items : []))
+      .then((data) => {
+        if (!data) return;
+        setSongList(Array.isArray(data?.items) ? data.items : []);
+      })
       .catch((error) => {
         if (error?.name === "AbortError") return;
         console.error(error);
         setFailed(true);
       })
       .finally(() => {
+        if (unauthorized) return;
         const remaining = MIN_SKELETON_MS - (Date.now() - startTime);
         if (remaining > 0) setTimeout(() => setLoading(false), remaining);
         else setLoading(false);
